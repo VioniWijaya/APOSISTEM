@@ -6,6 +6,7 @@ require('dotenv').config();
 
 // const indexRouter = require('./routes/index');
 const authRouter = require('./routes/authroute');
+const adminRouter = require('./routes/adminRoute');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/auth', authRouter);
+app.use('/admin', adminRouter);
 
 // Error handling
 app.use((req, res, next) => {
