@@ -1,0 +1,43 @@
+<%- include('navbar')%>
+
+<div class="container mx-auto px-4 py-10">
+    <h1 class="text-2xl font-semibold text-center mb-8">Pilih Jenis Permohonan</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      
+      <!-- Card Perorangan -->
+      <div class="card bg-base-100 shadow-md rounded-lg">
+        <figure>
+          <img src="/perorangan.jpg" alt="Perorangan" class="w-full h-48 object-cover rounded-t-lg">
+        </figure>
+        <div class="card-body">
+          <h2 class="card-title text-xl font-bold">Perorangan</h2>
+          <p class="text-sm text-gray-700">
+            Perorangan adalah istilah yang merujuk pada individu atau seseorang secara pribadi, bukan bagian dari kelompok, organisasi, atau badan hukum lainnya. Perorangan memiliki tanggung jawab penuh atas segala kewajiban dan risiko ditanggung oleh individu tersebut.
+          </p>
+          <div class="card-actions">
+            <a href="/user/stok" class="btn btn-sm bg-green-800 text-white w-full">Lanjutkan</a>
+
+          </div>
+        </div>
+      </div>
+      
+      <!-- Card Kelompok -->
+      <div class="card bg-base-100 shadow-md rounded-lg">
+        <figure>
+          <img src="/kelompok.jpg" alt="Kelompok" class="w-full h-48 object-cover rounded-t-lg">
+        </figure>
+        <div class="card-body">
+          <h2 class="card-title text-xl font-bold">Kelompok (Organisasi/Instansi/dll)</h2>
+          <p class="text-sm text-gray-700">
+            Kelompok adalah kumpulan individu yang berinteraksi dan saling bekerja sama untuk mencapai tujuan tertentu. Hubungan di dalam kelompok bisa bersifat formal maupun informal, bergantung pada struktur dan tujuan kelompok tersebut.
+          </p>
+          <div class="card-actions">
+            <a href="/user/stok" class="btn btn-sm bg-green-800 text-white w-full">Lanjutkan</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+</div>
+
+<%- include('footer')%>
