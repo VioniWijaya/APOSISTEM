@@ -1,0 +1,92 @@
+<
+
+<%- include('navbar')%>
+  <!-- Title -->
+  <div class="container mx-auto px-4 mt-4">
+    <a href="#" class="text-green-800 flex items-center space-x-2 mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-11.707a1 1 0 00-1.414 0l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L9.414 11H14a1 1 0 100-2H9.414l1.293-1.293a1 1 0 000-1.414z" clip-rule="evenodd" />
+      </svg>
+      <span class="text-xl font-bold">Keranjang</span>
+    </a>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="table w-full">
+        <!-- Table Head -->
+        <thead>
+          <tr>
+            <th class="bg-green-800 text-white">Nama Bibit</th>
+            <th class="bg-green-800 text-white">Jumlah Stok</th>
+            <th class="bg-green-800 text-white">Aksi</th>
+          </tr>
+        </thead>
+        <!-- Table Body -->
+        <tbody>
+          <!-- Row 1 -->
+          <tr class="bg-green-100">
+            <td>Nama Bibit</td>
+            <td>
+              <div class="flex items-center space-x-2">
+                <button class="btn btn-xs border bg-white text-black">-</button>
+                <input type="text" value="0" class="input input-bordered input-sm w-12 text-center">
+                <button class="btn btn-xs border bg-white text-black">+</button>
+              </div>
+            </td>
+            <td>
+                <button class="bg-red-700 text-white px-4 py-2 rounded">Hapus</button>
+            </td>
+          </tr>
+          <!-- Row 2 -->
+          <tr class="bg-green-50">
+            <td>Nama Bibit</td>
+            <td>
+              <div class="flex items-center space-x-2">
+                <button class="btn btn-xs border bg-white text-black">-</button>
+                <input type="text" value="0" class="input input-bordered input-sm w-12 text-center">
+                <button class="btn btn-xs border bg-white text-black">+</button>
+              </div>
+            </td>
+            <td>
+                <button class="bg-red-700 text-white px-4 py-2 rounded">Hapus</button>
+
+            </td>
+          </tr>
+          <!-- Row 3 -->
+          <tr class="bg-green-100">
+            <td>Nama Bibit</td>
+            <td>
+              <div class="flex items-center space-x-2">
+                <button class="btn btn-xs border bg-white text-black">-</button>
+                <input type="text" value="0" class="input input-bordered input-sm w-12 text-center">
+                <button class="btn btn-xs border bg-white text-black">+</button>
+              </div>
+            </td>
+            <td>
+                <button class="bg-red-700 text-white px-4 py-2 rounded">Hapus</button>
+
+            </td>
+          </tr>
+          <!-- Row 4 -->
+          <tr class="bg-green-50">
+            <td>Nama Bibit</td>
+            <td>
+              <div class="flex items-center space-x-2">
+                <button class="btn btn-xs border bg-white text-black">-</button>
+                <input type="text" value="0" class="input input-bordered input-sm w-12 text-center">
+                <button class="btn btn-xs border bg-white text-black">+</button>
+              </div>
+            </td>     
+            <td>
+                <button class="bg-red-700 text-white px-4 py-2 rounded">Hapus</button>
+              </td>              
+          </tr>           
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Submit Button -->
+    <div class="flex justify-end mt-6">
+        <button class="btn bg-red-600 text-white px-6 py-2">Ajukan</button>
+      </div>      
+    <%- include('footer')%>
