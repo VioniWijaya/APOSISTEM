@@ -20,4 +20,8 @@ router.get('/stok', (req, res) => {
 router.get('/keranjang', (req, res) => {
     res.render('user/keranjang');
 });
+
+router.get('/buatLaporan', (req, res) => {
+    res.render('user/buatLaporan');
+});
 module.exports = router;
