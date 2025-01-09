@@ -1,0 +1,72 @@
+<%- include('navbar')%>
+
+<div class="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
+  <h2 class="text-2xl font-semibold text-center mb-6">Formulir Laporan Pembibitan</h2>
+
+  <form method="post" action="/user/buatLaporan">
+    <div class="form-control mb-4">
+      <label class="label">
+        <span class="label-text">Nama Pemohon</span>
+      </label>
+      <input
+        type="text"
+        placeholder="Nama Pemohon"
+        class="input input-bordered w-full"
+        name="nama_pemohon"
+        required
+      />
+    </div>
+    <div class="form-control mb-4">
+      <label class="label">
+        <span class="label-text">Tanggal Pembibitan</span>
+      </label>
+      <input
+        type="date"
+        placeholder="Tanggal Pembibitan"
+        class="input input-bordered w-full"
+        name="tanggal_pembibitan"
+        required
+      />
+    </div>
+    <div class="form-control mb-4">
+      <label class="label">
+        <span class="label-text">Deskripsi</span>
+      </label>
+      <input
+        type="text"
+        placeholder="Deskripsi"
+        class="input input-bordered w-full"
+        name="deskripsi"
+        required
+      />
+    </div>
+    <div class="form-control mb-4">
+      <label class="label">
+        <span class="label-text">Alamat Pembibitan</span>
+      </label>
+      <input
+        type="text"
+        placeholder="Masukkan Alamat"
+        class="input input-bordered w-full"
+        name="alamat_pembibitan"
+        required
+      />
+    </div>
+    <div class="form-control mb-4">
+      <label class="label">
+        <span class="label-text">Upload Bukti</span>
+      </label>
+      <input
+        type="file"
+        id="file-upload"
+        class="file-input file-input-bordered w-full"
+        name="file_upload"
+      />
+    </div>
+    <div class="form-control mt-6">
+        <button class="btn bg-green-800 text-white px-6 py-2">Buat</button>
+    </div>
+  </form>
+</div>
+
+<%- include('footer')%>
