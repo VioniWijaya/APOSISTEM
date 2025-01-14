@@ -1,0 +1,62 @@
+<div class="flex min-h-screen">
+    <%- include('../admin/sidebarAdm') %>
+    <div class="w-full p-4">
+        <div class="relative">
+            <a href="#" class="btn btn-sm bg-green-800 hover:bg-green-700 absolute top-0 right-0 bottom-3">+ Tambah</a>
+        </div>
+        <div class="overflow-x-auto mt-12">
+            <table class="table w-full">
+                <thead>
+                    <tr>
+                        <th>ID Bibit</th>
+                        <th>Nama Bibit</th>
+                        <th>Jumlah stok</th>
+                        <th>Foto</th>
+                        <th>Deskripsi</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% stok.forEach(item => { %>
+                    <tr>
+                        <td><%= item.id_bibit %></td>
+                        <td><%= item.nama_bibit %></td>
+                        <td><%= item.stok_bibit %></td>
+                        <td>
+                            <img src="<%= item.foto %>" alt="<%= item.nama_bibit %>" class="w-16 h-16 object-cover" />
+                        </td>
+                        <td><%= item.deskripsi %></td>
+                        <td>
+                            <div class="flex justify-between">
+                                <div>
+                                    <a href="/admin/edit-bibit/<%= item.id_bibit %>" class="btn btn-sm btn-warning mr-2">Edit</a>
+                                </div>
+                                <div>
+                                    <label for="delete-modal-<%= item.id_bibit %>" class="btn btn-sm btn-error modal-button">Hapus</label>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <% stok.forEach(item => { %>
+    <input type="checkbox" id="delete-modal-<%= item.id_bibit %>" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Konfirmasi Penghapusan</h3>
+            <p>Apakah Anda yakin ingin menghapus bibit <%= item.nama_bibit %>?</p>
+            <p>Semua data yang berhubungan dengan bibit ini akan ikut terhapus</p>
+            <div class="modal-action">
+                <form action="/admin/delete-bibit/<%= item.id_bibit %>" method="post">
+                    <button type="submit" class="btn btn-error">Ya, Hapus</button>
+                </form>
+                <label for="delete-modal-<%= item.id_bibit %>" class="btn">Batal</label>
+            </div>
+        </div>
+    </div>
+    <% }) %>
+</div>
