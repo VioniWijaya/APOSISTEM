@@ -2,7 +2,7 @@
     <%- include('../admin/sidebarAdm') %>
     <div class="w-full p-4">
         <div class="relative">
-            <a href="#" class="btn btn-sm bg-green-800 hover:bg-green-700 absolute top-0 right-0 bottom-3">+ Tambah</a>
+            <a href="/admin/tambahStok" class="btn btn-sm bg-green-800 hover:bg-green-700 absolute top-0 right-0 bottom-3">+ Tambah</a>
         </div>
         <div class="overflow-x-auto mt-12">
             <table class="table w-full">
@@ -32,6 +32,7 @@
                                     <a href="/admin/edit-bibit/<%= item.id_bibit %>" class="btn btn-sm btn-warning mr-2">Edit</a>
                                 </div>
                                 <div>
+                                    <!-- Tombol Hapus yang akan membuka modal -->
                                     <label for="delete-modal-<%= item.id_bibit %>" class="btn btn-sm btn-error modal-button">Hapus</label>
                                 </div>
                             </div>
@@ -44,6 +45,7 @@
     </div>
 
     <% stok.forEach(item => { %>
+    <!-- Modal untuk konfirmasi penghapusan -->
     <input type="checkbox" id="delete-modal-<%= item.id_bibit %>" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box">
@@ -51,8 +53,9 @@
             <p>Apakah Anda yakin ingin menghapus bibit <%= item.nama_bibit %>?</p>
             <p>Semua data yang berhubungan dengan bibit ini akan ikut terhapus</p>
             <div class="modal-action">
-                <form action="/admin/delete-bibit/<%= item.id_bibit %>" method="post">
-                    <button type="submit" class="btn btn-error">Ya, Hapus</button>
+                <!-- Form untuk menghapus bibit -->
+                <form action="/admin/hapusStok/<%= item.id_bibit %>" method="post" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                    <button type="submit" class="btn btn-danger">Ya, Hapus</button>
                 </form>
                 <label for="delete-modal-<%= item.id_bibit %>" class="btn">Batal</label>
             </div>

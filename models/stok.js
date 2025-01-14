@@ -8,7 +8,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Stok.init({
-    id_bibit: DataTypes.INTEGER,
+    id_bibit: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     nama_bibit: DataTypes.STRING,
     stok_bibit: DataTypes.INTEGER,
     foto: DataTypes.STRING,

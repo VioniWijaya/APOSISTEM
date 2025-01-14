@@ -1,0 +1,39 @@
+<div class="flex min-h-screen bg-gray-100">
+    <!-- Sidebar -->
+    <%- include('../admin/sidebarAdm') %>
+
+    <!-- Main Content -->
+    <div class="flex flex-col flex-1 p-6">
+        <h2 class="text-2xl font-bold text-gray-700 mb-6">Tambah Bibit</h2>
+
+        <form method="post" action="/admin/tambahStok" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
+            <div class="form-control mb-4">
+                <label class="label font-medium">
+                    <span class="label-text text-gray-600">Nama Bibit</span>
+                </label>
+                <input type="text" placeholder="Nama Bibit" class="input input-bordered w-full" name="nama_bibit" required />
+            </div>
+            <div class="form-control mb-4">
+                <label class="label font-medium">
+                    <span class="label-text text-gray-600">Jumlah Stok</span>
+                </label>
+                <input type="number" placeholder="Masukkan Jumlah Bibit" class="input input-bordered w-full" name="stok_bibit" required />
+            </div>
+            <div class="form-control mb-4">
+                <label class="label font-medium">
+                    <span class="label-text text-gray-600">Deskripsi</span>
+                </label>
+                <textarea placeholder="Berikan Deskripsi Singkat" class="textarea textarea-bordered w-full" name="deskripsi" required></textarea>
+            </div>
+            <div class="form-control mb-4">
+                <label class="label font-medium">
+                    <span class="label-text text-gray-600">Upload Foto</span>
+                </label>
+                <input type="file" class="input input-bordered w-full" name="foto" accept="image/*" required />
+            </div>
+            <div class="form-control mt-6">
+                <button type="submit" class="btn btn-primary w-full">Tambah</button>
+            </div>
+        </form>
+    </div>
+</div>

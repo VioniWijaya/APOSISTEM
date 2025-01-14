@@ -12,4 +12,12 @@ router.get('/profil', (req, res) => {
 
 router.get('/kelolabibit', adminController.getAllStok);
 
+router.get('/tambahStok', (req, res) => {
+    res.render('admin/tambahStok'); 
+});
+
+router.post('/tambahStok', adminController.addStok);
+
+router.post('/hapusStok/:id', adminController.deleteStok);
+
 module.exports = router;

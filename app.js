@@ -13,6 +13,8 @@ const userRouter = require('./routes/userRoute');
 
 const app = express();
 
+
+
 // View engine setup
 app.set('views', path.join(__dirname, 'view'));
 app.set('view engine', 'ejs');
