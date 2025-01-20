@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
+
 module.exports = (sequelize) => {
-  return sequelize.define('Admin', {
+  const Admin = sequelize.define('Admin', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -27,5 +28,10 @@ module.exports = (sequelize) => {
     foto_profile: DataTypes.STRING(255),
     no_hp: DataTypes.STRING(15),
     alamat: DataTypes.TEXT,
+  }, {
+    tableName: 'admin',
+    timestamps: true,
   });
+
+  return Admin;
 };
