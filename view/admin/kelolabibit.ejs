@@ -1,65 +1,43 @@
 <div class="flex min-h-screen">
+    <!-- Sidebar -->
     <%- include('../admin/sidebarAdm') %>
-    <div class="w-full p-4">
-        <div class="relative">
-            <a href="/admin/tambahStok" class="btn btn-sm bg-green-800 hover:bg-green-700 absolute top-0 right-0 bottom-3">+ Tambah</a>
-        </div>
-        <div class="overflow-x-auto mt-12">
-            <table class="table w-full">
-                <thead>
-                    <tr>
-                        <th>ID Bibit</th>
-                        <th>Nama Bibit</th>
-                        <th>Jumlah stok</th>
-                        <th>Foto</th>
-                        <th>Deskripsi</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% stok.forEach(item => { %>
-                    <tr>
-                        <td><%= item.id_bibit %></td>
-                        <td><%= item.nama_bibit %></td>
-                        <td><%= item.stok_bibit %></td>
-                        <td>
-                            <img src="<%= item.foto %>" alt="<%= item.nama_bibit %>" class="w-16 h-16 object-cover" />
-                        </td>
-                        <td><%= item.deskripsi %></td>
-                        <td>
-                            <div class="flex justify-between">
-                                <div>
-                                    <a href="/admin/edit-bibit/<%= item.id_bibit %>" class="btn btn-sm btn-warning mr-2">Edit</a>
-                                </div>
-                                <div>
-                                    <!-- Tombol Hapus yang akan membuka modal -->
-                                    <label for="delete-modal-<%= item.id_bibit %>" class="btn btn-sm btn-error modal-button">Hapus</label>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <% }) %>
-                </tbody>
-            </table>
-        </div>
-    </div>
 
-    <% stok.forEach(item => { %>
-    <!-- Modal untuk konfirmasi penghapusan -->
-    <input type="checkbox" id="delete-modal-<%= item.id_bibit %>" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box">
-            <h3 class="font-bold text-lg">Konfirmasi Penghapusan</h3>
-            <p>Apakah Anda yakin ingin menghapus bibit <%= item.nama_bibit %>?</p>
-            <p>Semua data yang berhubungan dengan bibit ini akan ikut terhapus</p>
-            <div class="modal-action">
-                <!-- Form untuk menghapus bibit -->
-                <form action="/admin/hapusStok/<%= item.id_bibit %>" method="post" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
-                    <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col">
+        <!-- Header -->
+
+        <!-- Content -->
+        <div class="p-6">
+            <div class="bg-base-100 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-4">Edit Bibit</h2>
+                <form>
+                    <div class="mb-4">
+                        <label class="block text-lg font-medium mb-2">Nama Bibit</label>
+                        <input type="text" value="Durian" class="input input-bordered w-full" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-lg font-medium mb-2">Jumlah Bibit</label>
+                        <input type="number" placeholder="hanya angka" class="input input-bordered w-full" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-lg font-medium mb-2">Upload Foto</label>
+                        <div class="input-group">
+                            <input type="text" value="bibit_durian.jpg" class="input input-bordered w-full" />
+                            <button class="btn btn-outline">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5V19a2.5 2.5 0 002.5 2.5h13A2.5 2.5 0 0021 19v-2.5M16 10l-4 4m0 0l-4-4m4 4V3" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-full">Perbarui</button>
                 </form>
-                <label for="delete-modal-<%= item.id_bibit %>" class="btn">Batal</label>
             </div>
         </div>
     </div>
-    <% }) %>
 </div>
+</body>
+</html>
