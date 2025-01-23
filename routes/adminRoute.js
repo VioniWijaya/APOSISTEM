@@ -10,7 +10,6 @@ router.get('/profil', (req, res) => {
     res.render('admin/profilAdm');
 });
 
-router.get('/kelolabibit', adminController.getAllStok);
 
 router.get('/tambahStok', (req, res) => {
     res.render('admin/tambahStok'); 
@@ -19,5 +18,13 @@ router.get('/tambahStok', (req, res) => {
 router.post('/tambahStok', adminController.addStok);
 
 router.post('/hapusStok/:id', adminController.deleteStok);
+
+router.get('/stokAdmin', (req, res) => {
+    res.render('admin/stokAdmin');
+});
+
+router.get('/kelolabibit', (req, res) => {
+    res.render('admin/kelolabibit');
+});
 
 module.exports = router;
