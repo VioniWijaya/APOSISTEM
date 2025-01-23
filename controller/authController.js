@@ -12,10 +12,15 @@ module.exports = {
   
     try {
       const admin = await Admin.findOne({ where: { email } });
+  
+      if (!admin) {
+        return res.redirect('/auth/login?error=' + encodeURIComponent('Email tidak ditemukan'));
+      }
+  
       const isMatch = await bcrypt.compare(password, admin.password);
   
-      if (!admin || !isMatch) {
-        return res.redirect('/auth/login?error=' + encodeURIComponent('Email dan Password tidak valid'));
+      if (!isMatch) {
+        return res.redirect('/auth/login?error=' + encodeURIComponent('Password salah'));
       }
   
       req.session.id = admin.id;
