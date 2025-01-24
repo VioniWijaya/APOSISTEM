@@ -15,15 +15,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Fungsi untuk mengambil semua stok
-exports.getAllStok = async (req, res) => {
-    try {
-        const stok = await Stok.findAll();
-        res.render('admin/kelolabibit', { stok });
-    } catch (error) {
-        console.error('Error saat mengambil stok:', error.message);
-        res.status(500).send('Terjadi kesalahan pada server');
-    }
-};
+// exports.getAllStok = async (req, res) => {
+//     try {
+//         const stok = await Stok.findAll();
+//         res.render('admin/kelolabibit', { stok });
+//     } catch (error) {
+//         console.error('Error saat mengambil stok:', error.message);
+//         res.status(500).send('Terjadi kesalahan pada server');
+//     }
+// };
 
 // Fungsi untuk menambah stok
 exports.addStok = [
