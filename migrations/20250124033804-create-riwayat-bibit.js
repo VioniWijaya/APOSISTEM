@@ -2,12 +2,22 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('bibit', {
+    await queryInterface.createTable('riwayat_bibit', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
+      },
+      bibit_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'bibit', // Nama tabel referensi
+          key: 'id',      // Primary key tabel referensi
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       admin_id: {
         type: Sequelize.INTEGER,
@@ -19,26 +29,22 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      nama: {
-        type: Sequelize.STRING(100),
-        allowNull: false,
-      },
-      jumlah: {
+      produksi: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      deskripsi: {
-        type: Sequelize.TEXT,
+      distribusi: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
-      foto_bibit: {
-        type: Sequelize.STRING(255),
-        allowNull: true,
+      tanggal_update: {
+        type: Sequelize.DATE,
+        allowNull: false,
       },
     });
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('bibit');
+    await queryInterface.dropTable('riwayat_bibit');
   },
 };

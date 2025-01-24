@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('permohonan', {
@@ -5,29 +7,97 @@ module.exports = {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+        allowNull: false,
       },
-      admin_id: Sequelize.INTEGER,
-      bibit_permohonan_id: Sequelize.INTEGER,
-      nama_pemohon: Sequelize.STRING(100),
-      foto_ktp: Sequelize.STRING(255),
-      tujuan: Sequelize.TEXT,
-      luas_lahan: Sequelize.DECIMAL(10, 2),
-      foto_lahan: Sequelize.STRING(255),
-      koordinat: Sequelize.STRING(50),
-      foto_surat_pengantar: Sequelize.STRING(255),
-      nik: Sequelize.STRING(16),
-      lokasi_tanam: Sequelize.TEXT,
-      no_hp: Sequelize.STRING(15),
-      alamat: Sequelize.TEXT,
-      agama: Sequelize.STRING(50),
-      tempat_lahir: Sequelize.STRING(100),
-      tgl_lahir: Sequelize.DATE,
-      pekerjaan: Sequelize.STRING(100),
-      status_permohonan: Sequelize.STRING(50),
-      tanggal_jemput: Sequelize.DATE,
+      bibit_permohonan_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'bibit_permohonan', // Tabel referensi
+          key: 'id',                // Primary key dari tabel referensi
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+      inisiasi_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'inisiasi', // Tabel referensi
+          key: 'id',         // Primary key dari tabel referensi
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+      nama_pemohon: {
+        type: Sequelize.STRING(100),
+        allowNull: false,
+      },
+      foto_ktp: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
+      tujuan: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+      },
+      luas_lahan: {
+        type: Sequelize.DECIMAL(10, 2),
+        allowNull: false,
+      },
+      foto_lahan: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
+      koordinat: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+      },
+      foto_surat_pengantar: {
+        type: Sequelize.STRING(255),
+        allowNull: true,
+      },
+      nik: {
+        type: Sequelize.STRING(16),
+        allowNull: false,
+        unique: true,
+      },
+      lokasi_tanam: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+      },
+      no_hp: {
+        type: Sequelize.STRING(15),
+        allowNull: false,
+      },
+      alamat: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+      },
+      agama: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+      },
+      tempat_lahir: {
+        type: Sequelize.STRING(100),
+        allowNull: false,
+      },
+      tgl_lahir: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      pekerjaan: {
+        type: Sequelize.STRING(100),
+        allowNull: false,
+      },
+      jenis_permohonan: {
+        type: Sequelize.ENUM('Perorangan', 'Kelompok'),
+        allowNull: false,
+      },
     });
   },
-  down: async (queryInterface) => {
+
+  down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('permohonan');
   },
 };

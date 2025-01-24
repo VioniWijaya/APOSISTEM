@@ -12,7 +12,6 @@ const db = {};
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
-  
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
@@ -25,7 +24,6 @@ sequelize
   .catch((error) => {
     console.error('Koneksi ke database gagal:', error.message);
   });
-
 
 fs
   .readdirSync(__dirname)
@@ -44,9 +42,19 @@ fs
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
-    db[modelName].associate(db);
+    db[modelName].associate(db);  // Menjalankan fungsi relasi untuk setiap model
   }
 });
+
+// Relasi antara tabel
+db.Admin.hasMany(db.Permohonan, { foreignKey: 'admin_id', as: 'permohonan' });
+db.Permohonan.belongsTo(db.Admin, { foreignKey: 'admin_id', as: 'admin' });
+
+db.Permohonan.hasMany(db.BibitPermohonan, { foreignKey: 'bibit_permohonan_id', as: 'bibit_permohonan' });
+db.BibitPermohonan.belongsTo(db.Permohonan, { foreignKey: 'bibit_permohonan_id', as: 'permohonan' });
+
+db.Bibit.hasMany(db.BibitPermohonan, { foreignKey: 'bibit_id', as: 'bibit_permohonan' });
+db.BibitPermohonan.belongsTo(db.Bibit, { foreignKey: 'bibit_id', as: 'bibit' });
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
