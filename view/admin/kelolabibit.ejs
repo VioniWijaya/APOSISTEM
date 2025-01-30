@@ -1,43 +1,144 @@
 <div class="flex min-h-screen">
     <!-- Sidebar -->
     <%- include('../admin/sidebarAdm') %>
-
-    <!-- Main Content -->
     <div class="flex-1 flex flex-col">
         <!-- Header -->
-
-        <!-- Content -->
-        <div class="p-6">
-            <div class="bg-base-100 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-4">Edit Bibit</h2>
-                <form>
-                    <div class="mb-4">
-                        <label class="block text-lg font-medium mb-2">Nama Bibit</label>
-                        <input type="text" value="Durian" class="input input-bordered w-full" />
+        <div class="navbar bg-base-100 shadow-md px-4 flex justify-between items-center">
+            <div></div>
+            <div class="flex items-center gap-2 ml-auto">
+                <div class="avatar">
+                    <div class="w-10 rounded-full">
+                        <img src="https://via.placeholder.com/40" alt="Profil Wahyudi" />
                     </div>
+                </div>
+                <span class="font-medium">Wahyudi</span>
+            </div>
+        </div>
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            
+            <!-- Title -->
+            <div class="p-6">
+                <h1 class="text-3xl font-bold mb-6">Edit Bibit</h1>
 
-                    <div class="mb-4">
-                        <label class="block text-lg font-medium mb-2">Jumlah Bibit</label>
-                        <input type="number" placeholder="hanya angka" class="input input-bordered w-full" />
-                    </div>
+                <!-- Back Button -->
+                <button 
+                    class="btn btn-secondary mb-4"
+                    onclick="history.back()">
+                    &larr; Kembali
+                </button>
 
-                    <div class="mb-4">
-                        <label class="block text-lg font-medium mb-2">Upload Foto</label>
-                        <div class="input-group">
-                            <input type="text" value="bibit_durian.jpg" class="input input-bordered w-full" />
-                            <button class="btn btn-outline">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5V19a2.5 2.5 0 002.5 2.5h13A2.5 2.5 0 0021 19v-2.5M16 10l-4 4m0 0l-4-4m4 4V3" />
-                                </svg>
-                            </button>
+                <!-- Content -->
+                <div class="bg-base-100 p-6 rounded-lg shadow-md">
+                    <form method="POST" action="/admin/kelolabibit/edit/<%= bibit.id%>" enctype="multipart/form-data">
+                        <!-- Nama Bibit -->
+                        <div class="mb-4">
+                            <label class="block text-lg font-medium mb-2">Nama Bibit</label>
+                            <input 
+                                type="text" 
+                                name="nama_bibit" 
+                                value="<%= bibit.nama_bibit %>" 
+                                class="input input-bordered w-full" />
                         </div>
-                    </div>
 
-                    <button type="submit" class="btn btn-success w-full">Perbarui</button>
-                </form>
+                        <!-- Jumlah Bibit -->
+                        <div class="mb-4">
+                            <label class="block text-lg font-medium mb-2">Jumlah Bibit</label>
+                            <input 
+                                type="number" 
+                                name="stok_bibit"
+                                value="<%= bibit.stok_bibit %>"
+                                class="input input-bordered w-full" />
+                        </div>
+
+                        <!-- Stok Tersedia -->
+                        <div class="mb-4">
+                            <label class="block text-lg font-medium mb-2">Stok Tersedia</label>
+                            <input 
+                                type="number" 
+                                name="jumlah_bibit" 
+                                value="<%= bibit.jumlah_bibit %>"
+                                class="input input-bordered w-full" />
+                        </div>
+
+                        <!-- Upload Foto -->
+                        <div class="mb-4">
+                            <label class="block text-lg font-medium mb-2">Upload Foto</label>
+                            <div id="upload-container" class="relative">
+                                <input 
+                                    type="file" 
+                                    id="file-input" 
+                                    class="file-input file-input-bordered hidden" 
+                                    accept="image/*"
+                                    name="foto_bibit"
+                                />
+                                <div id="preview-container" class="relative hidden">
+                                    <img 
+                                        id="image-preview" 
+                                        class="w-32 h-32 rounded-lg object-cover" 
+                                        alt="Preview Gambar" 
+                                        src="<%= bibit.foto_bibit ? '/uploads/' + bibit.foto_bibit : '' %>" />
+                                    <button 
+                                        type="button" 
+                                        id="remove-btn" 
+                                        class="absolute top-2 right-2 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center shadow-md hover:bg-red-600"
+                                        title="Hapus Foto">
+                                        &times;
+                                    </button>
+                                </div>
+                                <button 
+                                    type="button" 
+                                    id="choose-btn" 
+                                    class="btn btn-primary w-full">
+                                    Pilih Foto
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-success w-full">Perbarui</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
-</body>
-</html>
+
+<script>
+    const fileInput = document.getElementById('file-input');
+    const imagePreview = document.getElementById('image-preview');
+    const removeBtn = document.getElementById('remove-btn');
+    const chooseBtn = document.getElementById('choose-btn');
+    const previewContainer = document.getElementById('preview-container');
+
+    // Event listener untuk tombol pilih file
+    chooseBtn.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // Event listener ketika file dipilih
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            // Menampilkan preview gambar
+            reader.onload = (e) => {
+                imagePreview.src = e.target.result;
+                previewContainer.classList.remove('hidden');
+                chooseBtn.classList.add('hidden');
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Event listener untuk tombol hapus gambar
+    removeBtn.addEventListener('click', () => {
+        fileInput.value = ''; // Reset input file
+        imagePreview.src = ''; // Hapus src gambar
+        previewContainer.classList.add('hidden'); // Sembunyikan preview
+        chooseBtn.classList.remove('hidden'); // Tampilkan tombol pilih
+    });
+</script>

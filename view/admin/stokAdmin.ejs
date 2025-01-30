@@ -1,72 +1,79 @@
+<div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <%- include('../admin/sidebarAdm') %>
+    <%- include('./partials/modal-hapus') %>
 
-    <div class="flex min-h-screen">
-        <!-- Sidebar -->
-        <%- include('../admin/sidebarAdm') %>
-
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col">
-            <!-- Header -->
-            <div class="navbar bg-base-100 shadow-md px-4 flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <span class="font-medium">Wahyudi</span>
-                    <div class="avatar">
-                        <div class="w-10 rounded-full">
-                            <img src="https://via.placeholder.com/40" alt="Profil Wahyudi" />
-                        </div>
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col">
+        <!-- Header -->
+        <div class="navbar bg-base-100 shadow-md px-4 flex justify-between items-center">
+            <div></div>
+            <div class="flex items-center gap-2 ml-auto">
+                <div class="avatar">
+                    <div class="w-10 rounded-full">
+                        <img src="https://via.placeholder.com/40" alt="Profil Wahyudi" />
                     </div>
                 </div>
+                <span class="font-medium">Wahyudi</span>
             </div>
+        </div>
 
-            <!-- Content -->
-            <div class="p-6">
-                <div class="flex justify-end mb-4">
-                    <button class="btn btn-success">Tambah Bibit</button>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="table w-full">
-                        <!-- Table Head -->
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Bibit</th>
-                                <th>Stok Tersedia</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Example Rows -->
-                            <tr class="hover">
-                                <th>1</th>
-                                <td>Nama Bibit 1</td>
-                                <td>100</td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary">Edit</button>
-                                    <button class="btn btn-sm btn-error">Hapus</button>
-                                </td>
-                            </tr>
-                            <tr class="hover">
-                                <th>2</th>
-                                <td>Nama Bibit 2</td>
-                                <td>50</td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary">Edit</button>
-                                    <button class="btn btn-sm btn-error">Hapus</button>
-                                </td>
-                            </tr>
-                            <tr class="hover">
-                                <th>3</th>
-                                <td>Nama Bibit 3</td>
-                                <td>200</td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary">Edit</button>
-                                    <button class="btn btn-sm btn-error">Hapus</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <!-- Content -->
+        <div class="p-6">
+            <!-- Title -->
+            <h1 class="text-3xl font-bold mb-4">Stok Bibit</h1>
+
+            <div class="flex justify-end mb-2">
+                <a href="/admin/tambahStok" class="bg-[#123524] text-white px-2 py-1 rounded flex items-center gap-1">
+                    <span>+</span> Tambah Stok
+                </a>
+                
+            </div>
+            <div class="overflow-x-auto">
+                <table class="table w-full">
+                    <!-- Table Head -->
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Bibit</th>
+                            <th>Jumlah</th>
+                            <th>Deskripsi</th>
+                            <th>Foto</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% bibit.forEach((item, index) => { %>
+                        <tr class="hover bg-gray-100">
+                            <th><%= index + 1 %></th>
+                            <td><%= item.nama %></td>  <!-- Pastikan nama sesuai dengan field pada model -->
+                            <td><%= item.jumlah %></td>  <!-- Pastikan nama sesuai dengan field pada model -->
+                            <td><%= item.deskripsi %></td>
+                            <td>
+                                <% if (item.foto_bibit) { %>
+                                    <img src="/uploads/<%= item.foto_bibit %>" alt="Foto Bibit" class="w-16 h-16 object-cover">
+                                <% } else { %>
+                                    <span class="text-gray-500">Tidak ada gambar</span>
+                                <% } %>
+                            </td>
+                            <td>
+                                <a href="/admin/kelolabibit/<%= item.id_bibit %>" class="bg-[#123524] text-white px-2 py-1 rounded">Detail</a>
+                                <button class="bg-[#123524] text-white px-2 py-1 rounded delete-btn" data-id="<%= bibit.id %>">Hapus</button>
+                                
+                            </td>
+                        </tr>
+                        <% }); %>
+                    </tbody>                    
+                </table>
             </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+
+<script>
+    function confirmDelete(id) {
+        if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+            window.location.href = '/admin/hapus/' + id;
+        }
+    }
+</script>

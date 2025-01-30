@@ -13,5 +13,9 @@ module.exports = (sequelize) => {
     jumlah: DataTypes.INTEGER,
     deskripsi: DataTypes.TEXT,
     foto_bibit: DataTypes.STRING(255),
+  }, {
+    tableName: 'bibit' ,
+    timestamps: false
   });
+  
 };
