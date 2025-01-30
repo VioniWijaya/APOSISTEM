@@ -37,7 +37,7 @@ app.use(session({
   app.use(flash());
   
 
-app.use('/auth', authRouter);
+// app.use('/auth', authRouter);
 app.use('/admin', adminRouter);
 app.use('/user', userRouter);
 app.use('/superadmin', superadminRouter);

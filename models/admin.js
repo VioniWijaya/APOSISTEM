@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+ module.exports = (sequelize, DataTypes) => {
   return sequelize.define('Admin', {
     id: {
       type: DataTypes.INTEGER,
@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Admin',
     tableName: 'admin',
-    timestamps: false,
+    timestamps: true,  // Aktifkan timestamps
     freezeTableName: true
   });
 };

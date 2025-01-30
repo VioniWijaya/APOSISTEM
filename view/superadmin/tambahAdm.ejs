@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
+</head>
+<body class="bg-gray-100">
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="flex min-h-screen">
+          <%- include('../superadmin/sidebarAdm')%>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-10">
+            <h1 class="text-2xl font-bold my-5">Tambah Admin</h1>
+
+            <form id="adminForm" enctype="multipart/form-data" class="bg-white p-6 rounded shadow-md">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Nama</label>
+                        <input type="text" name="nama" class="w-full border border-gray-300 p-3 rounded-md focus:ring focus:ring-green-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">NIP</label>
+                        <input type="text" name="nip" class="w-full border border-gray-300 p-3 rounded-md focus:ring focus:ring-green-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Email</label>
+                        <input type="email" name="email" class="w-full border border-gray-300 p-3 rounded-md focus:ring focus:ring-green-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Password</label>
+                        <input type="password" name="password" class="w-full border border-gray-300 p-3 rounded-md focus:ring focus:ring-green-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Alamat</label>
+                        <input type="text" name="alamat" class="w-full border border-gray-300 p-3 rounded-md focus:ring focus:ring-green-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">No HP</label>
+                        <input type="tel" name="no_hp" class="w-full border border-gray-300 p-3 rounded-md focus:ring focus:ring-green-500" required>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-700 font-semibold">Foto</label>
+                        <input type="file" name="foto_profile" class="w-full border border-gray-300 p-3 rounded-md focus:ring focus:ring-green-500">
+                    </div>
+                </div>
+                
+                <!-- Tombol Batal & Simpan -->
+                <div class="flex gap-4 mt-6">
+                    <button type="button" class="btn btn-error" onclick="window.history.back()">Batal</button>
+                    <button type="submit" class="btn btn-success">Simpan</button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <!-- Script untuk handle form submission -->
+    <script>
+        document.getElementById("adminForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            let formData = new FormData(this);
+
+            try {
+                let response = await fetch("/superadmin/admin/tambah", {
+                    method: "POST",
+                    body: formData
+                });
+
+                let result = await response.json();
+
+                if (result.success) {
+                    Swal.fire({
+                        title: "Berhasil!",
+                        text: "Admin berhasil ditambahkan.",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                        confirmButtonColor: "#d33" 
+                    }).then(() => {
+                        window.location.href = "/superadmin/kelolaAdm"; // Redirect ke halaman sebelumnya
+                    });
+                }
+            } catch (error) {
+                console.error("Terjadi kesalahan:", error);
+            }
+        });
+    </script>
+</body>
+</html>

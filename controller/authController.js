@@ -1,51 +1,24 @@
-const bcrypt = require('bcryptjs');
-const { Admin } = require('../models');
+const express = require("express");
+const router = express.Router();
+const multer = require("multer");
+const superAdminController = require("../controller/superAdminController");
 
-module.exports = {
-  // Handle login logic
-  postLogin: async (req, res) => {
-    const { email, password } = req.body;
-  
-    if (!email || !password) {
-      return res.redirect('/auth/login?error=' + encodeURIComponent('Email dan password harus diisi'));
-    }
-  
-    try {
-      const admin = await Admin.findOne({ where: { email } });
-  
-      if (!admin) {
-        return res.redirect('/auth/login?error=' + encodeURIComponent('Email tidak ditemukan'));
-      }
-  
-      const isMatch = await bcrypt.compare(password, admin.password);
-  
-      if (!isMatch) {
-        return res.redirect('/auth/login?error=' + encodeURIComponent('Password salah'));
-      }
-  
-      req.session.id = admin.id;
-      req.session.role = admin.role;
-  
-      if (admin.role === 'Super Admin') {
-        return res.redirect('/superadmin/dashboard');
-      } else if (admin.role === 'Admin') {
-        return res.redirect('/admin/dashboard');
-      } else {
-        return res.redirect('/auth/login?error=' + encodeURIComponent('Role tidak dikenali'));
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      return res.redirect('/auth/login?error=' + encodeURIComponent('Terjadi kesalahan saat login'));
-    }
-  },
+// Konfigurasi upload file
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "public/uploads/");
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    },
+});
 
-  // Logout handler
-  logout: (req, res) => {
-    req.session.destroy((err) => {
-      if (err) {
-        console.error('Logout error:', err);
-      }
-      res.redirect('/auth/login');
-    });
-  },
-};
+const upload = multer({ storage });
+
+// Rute untuk menampilkan form tambah admin
+router.get("/admin/tambah", superAdminController.tampilFormTambahAdmin);
+
+// Rute untuk menangani proses tambah admin
+router.post("/admin/tambah", upload.single("foto_profile"), superAdminController.tambahAdmin);
+
+module.exports = router;
