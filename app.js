@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const flash = require('connect-flash');
 const logger = require('morgan');
 require('dotenv').config();
 
@@ -8,6 +10,7 @@ require('dotenv').config();
 // const indexRouter = require('./routes/index');
 const authRouter = require('./routes/authroute');
 const adminRouter = require('./routes/adminRoute');
+const superadminRouter = require('./routes/superadminRoute');
 const userRouter = require('./routes/userRoute');
 
 
@@ -30,11 +33,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// Middleware untuk session dan flash messages
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+  }));
+  app.use(flash());
+  
 
-
-app.use('/auth', authRouter);
+// app.use('/auth', authRouter);
 app.use('/admin', adminRouter);
 app.use('/user', userRouter);
+app.use('/superadmin', superadminRouter);
 
 // Error handling
 app.use((req, res, next) => {

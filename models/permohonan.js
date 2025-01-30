@@ -1,32 +1,96 @@
-const { DataTypes } = require('sequelize');
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   return sequelize.define('Permohonan', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    admin_id: DataTypes.INTEGER,
-    bibit_permohonan_id: DataTypes.INTEGER,
+    bibit_permohonan_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'bibit_permohonan',
+        key: 'id'
+      }
+    },
+    inisiasi_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'inisiasi',
+        key: 'id'
+      }
+    },
     nama_pemohon: {
       type: DataTypes.STRING(100),
-      allowNull: false,
+      allowNull: false
     },
-    foto_ktp: DataTypes.STRING(255),
-    tujuan: DataTypes.TEXT,
-    luas_lahan: DataTypes.DECIMAL(10, 2),
-    foto_lahan: DataTypes.STRING(255),
-    koordinat: DataTypes.STRING(50),
-    foto_surat_pengantar: DataTypes.STRING(255),
-    nik: DataTypes.STRING(16),
-    lokasi_tanam: DataTypes.TEXT,
-    no_hp: DataTypes.STRING(15),
-    alamat: DataTypes.TEXT,
-    agama: DataTypes.STRING(50),
-    tempat_lahir: DataTypes.STRING(100),
-    tgl_lahir: DataTypes.DATE,
-    pekerjaan: DataTypes.STRING(100),
-    status_permohonan: DataTypes.STRING(50),
-    tanggal_jemput: DataTypes.DATE,
+    foto_ktp: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    tujuan: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    luas_lahan: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false
+    },
+    foto_lahan: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    koordinat: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    },
+    foto_surat_pengantar: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    nik: {
+      type: DataTypes.STRING(16),
+      allowNull: false,
+      unique: true
+    },
+    lokasi_tanam: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    no_hp: {
+      type: DataTypes.STRING(15),
+      allowNull: false
+    },
+    alamat: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    agama: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    },
+    tempat_lahir: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    tgl_lahir: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    pekerjaan: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    jenis_permohonan: {
+      type: DataTypes.ENUM('Perorangan', 'Kelompok'),
+      allowNull: false
+    }
+  }, {
+    sequelize,
+    modelName: 'Permohonan',
+    tableName: 'permohonan',
+    timestamps: false,
+    freezeTableName: true
   });
 };

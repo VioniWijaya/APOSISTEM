@@ -1,7 +1,5 @@
-const { DataTypes } = require('sequelize');
-
-module.exports = (sequelize) => {
-  const Admin = sequelize.define('Admin', {
+ module.exports = (sequelize, DataTypes) => {
+  return sequelize.define('Admin', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -9,29 +7,42 @@ module.exports = (sequelize) => {
     },
     nama: {
       type: DataTypes.STRING(100),
-      allowNull: false,
+      allowNull: false
     },
     email: {
       type: DataTypes.STRING(100),
-      unique: true,
       allowNull: false,
+      unique: true
     },
     password: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: false
     },
-    nip: DataTypes.STRING(50),
+    nip: {
+      type: DataTypes.STRING(50),
+      allowNull: true
+    },
     role: {
       type: DataTypes.ENUM('Super Admin', 'Admin'),
-      allowNull: false,
+      allowNull: false
     },
-    foto_profile: DataTypes.STRING(255),
-    no_hp: DataTypes.STRING(15),
-    alamat: DataTypes.TEXT,
+    foto_profile: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    no_hp: {
+      type: DataTypes.STRING(15),
+      allowNull: false
+    },
+    alamat: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    }
   }, {
+    sequelize,
+    modelName: 'Admin',
     tableName: 'admin',
-    timestamps: true,
+    timestamps: true,  // Aktifkan timestamps
+    freezeTableName: true
   });
-
-  return Admin;
 };

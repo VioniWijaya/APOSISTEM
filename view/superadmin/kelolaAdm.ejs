@@ -1,0 +1,116 @@
+<div class="flex min-h-screen">
+    <%- include('../superadmin/sidebarAdm')%>
+  <style>
+    /* Custom scrollbar for better appearance */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {      
+      background: #888;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+  </style>
+</head>    
+<body class="bg-gray-100">
+
+
+      <!-- Content -->
+      <div class="p-4">
+        <h1 class="text-2xl font-bold mb-4">Kelola Admin</h1>
+        <button 
+        class="btn btn-success mb-4" 
+        onclick="location.href='/superadmin/admin/tambah'">
+        + Tambah Admin
+      </button>
+      
+
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="table w-full border">
+            <thead>
+              <tr>       
+                <th>No</th>
+                <th>Foto Admin</th>
+                <th>Nama Admin</th>
+                <th>NIP</th>
+                <th>Email</th>
+                <th>Alamat</th>
+                <th>No Hp</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="admin-table">
+              <!-- Data rows will be inserted dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+
+  <script>
+    const admins = [
+      {
+        id: 1,
+        name: "Sutomo",
+        nip: "19098767678908987",
+        email: "Sutomo@gmail.com",
+        photo: "https://via.placeholder.com/100",
+      },
+      {
+        id: 2,
+        name: "Taehyung",
+        nip: "2349238427775634",
+        email: "taehyung@gmail.com",
+        photo: "https://via.placeholder.com/100",
+      },
+    ];
+    const tableBody = document.getElementById("admin-table");
+    function renderTable() {
+      tableBody.innerHTML = ""; // Clear previous data
+      admins.forEach((admin, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>
+            <div class="avatar">
+              <div class="w-16 rounded-full">
+                <img src="${admin.photo}" alt="Admin Photo" />
+              </div>
+            </div>
+          </td>
+          <td>${admin.name}</td>
+          <td>${admin.nip}</td>
+          <td>${admin.email}</td>
+          <td>
+            <button class="btn btn-error btn-sm" onclick="deleteAdmin(${admin.id})">Hapus</button>
+            <button class="btn btn-warning btn-sm" onclick="editAdmin(${admin.id})">Edit</button>
+            <button class="btn btn-info btn-sm" onclick="changePassword(${admin.id})">Ganti Password</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+    function deleteAdmin(id) {
+      const index = admins.findIndex((admin) => admin.id === id);
+      if (index !== -1) {
+        admins.splice(index, 1);
+        renderTable();
+      }
+    }
+    function editAdmin(id) {
+      alert("Edit Admin dengan ID: " + id);
+    }
+    function changePassword(id) {
+      alert("Ganti Password untuk Admin ID: " + id);
+    }
+    // Render table on page load
+    renderTable();
+  </script>
+</body>
+</html>
