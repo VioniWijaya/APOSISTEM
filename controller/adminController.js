@@ -94,3 +94,35 @@ exports.deleteStok = async (req, res) => {
         res.status(500).send('Terjadi kesalahan pada server');
     }
 };
+
+exports.getEachAdmin = async (req, res) => {
+    try {
+        console.log('Session user:', req.session.user);
+        const adminId = req.session.user ? req.session.user.id : null;
+        
+        if (!adminId) {
+            console.log('Admin ID not found in session');
+            return res.status(401).send("Unauthorized: Admin belum login");
+        }
+
+        const profil = await Admin.findOne({ 
+            where: { id: adminId },
+            attributes: ['id', 'nama', 'instansi', 'email', 'alamat', 'no_telp', 'role'] 
+        });
+
+        console.log('Retrieved profile:', profil);
+
+        if (!profil) {
+            console.log('Profile not found for ID:', adminId);
+            return res.status(404).send("Data tidak ditemukan");
+        }
+
+        res.render('admin/profilAdm', { 
+            profil,
+            user: req.session.user 
+        });
+    } catch (error) {
+        console.error('Error in getEachAdmin:', error);
+        res.status(500).send("Terjadi kesalahan mengambil data admin");
+    }
+};

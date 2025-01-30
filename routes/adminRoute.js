@@ -1,14 +1,27 @@
 var express = require('express');
 var router = express.Router();
 const adminController = require('../controller/adminController');
+const { ensureAuth, checkRole } = require('../middleware/auth');
+
 const multer = require('multer');
 
-router.get('/dashboard', (req, res) => {
-    res.render('admin/dashboard');
-});
 
-router.get('/profil', (req, res) => {
-    res.render('admin/profilAdm');
+// Profil route
+router.get('/profil', 
+    ensureAuth, 
+    checkRole(['Admin']), 
+    adminController.getEachAdmin
+);
+
+
+// Rute untuk dashboard Admin
+router.get('/dashboard', ensureAuth, checkRole(['Admin']), (req, res) => {
+    res.render('admin/dashboard');
+  });
+
+
+router.get('/kelolabibit', (req, res) => {
+    res.render('admin/kelolabibit');
 });
 
 const storage = multer.diskStorage({
