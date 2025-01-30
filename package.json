@@ -29,6 +29,7 @@
     "path": "^0.12.7",
     "sequelize": "^6.37.5",
     "sequelize-cli": "^6.6.2",
+    "sessions": "^0.0.2-7",
     "sweetalert2": "^11.15.10"
   },
   "devDependencies": {
