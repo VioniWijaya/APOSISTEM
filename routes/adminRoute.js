@@ -19,10 +19,10 @@ router.get('/dashboard', ensureAuth, checkRole(['Admin']), (req, res) => {
     res.render('admin/dashboard');
   });
 
+
 router.get('/kelolabibit', (req, res) => {
     res.render('admin/kelolabibit');
 });
-
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -91,5 +91,12 @@ router.post('/edit/:id', upload.single('foto_bibit'), async (req, res) => {
     }
 });
 
+router.get('/detailBibit', (req, res) => {
+    res.render('admin/detailBibit');
+});
+
+router.get('/editBibit', (req, res) => {
+    res.render('admin/editBibit');
+});
 
 module.exports = router;
