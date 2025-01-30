@@ -4,40 +4,36 @@ const { Admin } = require('../models');
 module.exports = {
   // Handle login logic
   postLogin: async (req, res) => {
-    const { email, password } = req.body;
-  
-    if (!email || !password) {
-      return res.redirect('/auth/login?error=' + encodeURIComponent('Email dan password harus diisi'));
-    }
-  
     try {
-      const admin = await Admin.findOne({ where: { email } });
-  
-      if (!admin) {
-        return res.redirect('/auth/login?error=' + encodeURIComponent('Email tidak ditemukan'));
-      }
-  
-      const isMatch = await bcrypt.compare(password, admin.password);
-  
-      if (!isMatch) {
-        return res.redirect('/auth/login?error=' + encodeURIComponent('Password salah'));
-      }
-  
-      req.session.id = admin.id;
-      req.session.role = admin.role;
-  
-      if (admin.role === 'Super Admin') {
-        return res.redirect('/superadmin/dashboard');
-      } else if (admin.role === 'Admin') {
-        return res.redirect('/admin/dashboard');
-      } else {
-        return res.redirect('/auth/login?error=' + encodeURIComponent('Role tidak dikenali'));
-      }
+        const admin = await Admin.findOne({ where: { email: req.body.email } });
+        
+        if (admin && await bcrypt.compare(req.body.password, admin.password)) {
+            console.log('Login successful for:', admin.email);
+            
+            // Simpan data ke session
+            req.session.user = {
+                id: admin.id,
+                role: admin.role,
+                email: admin.email,
+                nama: admin.nama
+            };
+            
+            console.log('Session after login:', req.session);
+            
+            if (admin.role === 'Admin') {
+                return res.redirect('/admin/dashboard');
+            }
+        }
+        
+        console.log('Login failed');
+        req.flash('error', { msg: 'Email atau password salah' });
+        res.redirect('/auth/login');
     } catch (error) {
-      console.error('Login error:', error);
-      return res.redirect('/auth/login?error=' + encodeURIComponent('Terjadi kesalahan saat login'));
+        console.error('Login error:', error);
+        req.flash('error', { msg: 'Terjadi kesalahan saat login' });
+        res.redirect('/auth/login');
     }
-  },
+},
 
   // Logout handler
   logout: (req, res) => {

@@ -1,15 +1,19 @@
 var express = require('express');
 var router = express.Router();
 const adminController = require('../controller/adminController');
+const { ensureAuth, checkRole } = require('../middleware/auth');
 
-router.get('/dashboard', (req, res) => {
+// Profil route
+router.get('/profil', 
+    ensureAuth, 
+    checkRole(['Admin']), 
+    adminController.getEachAdmin
+);
+
+// Rute untuk dashboard Admin
+router.get('/dashboard', ensureAuth, checkRole(['Admin']), (req, res) => {
     res.render('admin/dashboard');
-});
-
-router.get('/profil', (req, res) => {
-    res.render('admin/profilAdm');
-});
-
+  });
 
 router.get('/tambahStok', (req, res) => {
     res.render('admin/tambahStok'); 
