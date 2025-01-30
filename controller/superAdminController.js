@@ -1,42 +1,39 @@
-// const bcrypt = require('bcrypt');
-// const Admin = require('./models/admin'); // Sesuaikan dengan lokasi model Anda
+const bcrypt = require("bcryptjs");
+const { Admin } = require("../models");
+const path = require("path");
+const fs = require("fs");
 
-// const loginHandler = async (req, res) => {
-//   const { email, password } = req.body;
+exports.tampilFormTambahAdmin = (req, res) => {
+    res.render("superadmin/tambahAdm");
+};
 
-//   try {
-//     // Cari pengguna berdasarkan email
-//     const user = await Admin.findOne({ where: { email } });
+exports.tambahAdmin = async (req, res) => {
+    try {
+        const { nama, email, password, nip, no_hp, alamat } = req.body;
 
-//     if (!user) {
-//       return res.render('login', { pesan: [{ msg: 'Email tidak ditemukan' }] });
-//     }
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-//     // Periksa password
-//     const isMatch = await bcrypt.compare(password, user.password);
-//     if (!isMatch) {
-//       return res.render('login', { pesan: [{ msg: 'Password salah' }] });
-//     }
+        // Upload file foto jika ada
+        let foto_profile = null;
+        if (req.file) {
+            foto_profile = `/uploads/${req.file.filename}`;
+        }
 
-//     // Simpan data pengguna dalam sesi
-//     req.session.user = {
-//       id: user.id,
-//       nama: user.nama,
-//       role: user.role,
-//     };
+        const newAdmin = await Admin.create({
+            nama,
+            email,
+            password: hashedPassword,
+            nip,
+            role: "Admin",
+            foto_profile,
+            no_hp,
+            alamat,
+        });
 
-//     // Arahkan berdasarkan role
-//     if (user.role === 'Super Admin') {
-//       return res.redirect('/superadmin/dashboard');
-//     } else if (user.role === 'Admin') {
-//       return res.redirect('/admin/dashboard');
-//     }
-
-//     res.redirect('/auth/admin');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('Terjadi kesalahan server');
-//   }
-// };
-
-// module.exports = loginHandler;
+        res.json({ success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Terjadi kesalahan pada server");
+    }
+};

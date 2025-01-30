@@ -22,6 +22,11 @@ const app = express();
 app.set('views', path.join(__dirname, 'view'));
 app.set('view engine', 'ejs');
 
+app.get('/kelolabibit', (req, res) => {
+    res.render('admin/kelolabibit');
+});
+
+
 // Middleware
 app.use(logger('dev'));
 app.use(express.json());
@@ -37,7 +42,7 @@ app.use(session({
   app.use(flash());
   
 
-app.use('/auth', authRouter);
+// app.use('/auth', authRouter);
 app.use('/admin', adminRouter);
 app.use('/user', userRouter);
 app.use('/superadmin', superadminRouter);
