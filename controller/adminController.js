@@ -1,6 +1,6 @@
 const multer = require('multer');
 const path = require('path');
-const { Stok } = require('../models');
+const { Bibit } = require('../models');
 
 // Konfigurasi multer untuk penyimpanan file
 const storage = multer.diskStorage({
@@ -14,16 +14,52 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Fungsi untuk mengambil semua stok
-// exports.getAllStok = async (req, res) => {
-//     try {
-//         const stok = await Stok.findAll();
-//         res.render('admin/kelolabibit', { stok });
-//     } catch (error) {
-//         console.error('Error saat mengambil stok:', error.message);
-//         res.status(500).send('Terjadi kesalahan pada server');
-//     }
-// };
+exports.getStok = async (req, res) => {
+    try {
+        // Ambil data stok dari database
+        const bibit = await Bibit.findAll();
+        res.render('admin/stokAdmin', { bibit });
+    } catch (error) {
+        console.error('Error mengambil data stok:', error.message);
+        res.status(500).send('Terjadi kesalahan pada server');
+    }
+};
+
+// Tambah stok (form submit)
+exports.tambahStok = (req, res) => {
+    const { nama, jumlah, deskripsi } = req.body;
+    let fotoBibit = req.file ? req.file.filename : null;
+
+    db.query('INSERT INTO stok (nama, jumlah, deskripsi, foto_bibit) VALUES (?, ?, ?, ?)', 
+        [nama, jumlah, deskripsi, fotoBibit], 
+        (err) => {
+            if (err) throw err;
+            res.redirect('/admin/stok');
+        }
+    );
+};
+
+// Hapus stok
+exports.hapusStok = (req, res) => {
+    const { id } = req.params;
+
+    // Ambil foto untuk dihapus jika ada
+    db.query('SELECT foto_bibit FROM stok WHERE id = ?', [id], (err, results) => {
+        if (err) throw err;
+
+        if (results.length > 0 && results[0].foto_bibit) {
+            const filePath = path.join(__dirname, '../public/uploads/', results[0].foto_bibit);
+            fs.unlink(filePath, (err) => {
+                if (err) console.log('Gagal hapus foto:', err);
+            });
+        }
+
+        db.query('DELETE FROM stok WHERE id = ?', [id], (err) => {
+            if (err) throw err;
+            res.redirect('/admin/stok');
+        });
+    });
+};
 
 // Fungsi untuk menambah stok
 exports.addStok = [
@@ -44,6 +80,8 @@ exports.addStok = [
         }
     }
 ];
+
+
 
 // Fungsi untuk menghapus stok
 exports.deleteStok = async (req, res) => {

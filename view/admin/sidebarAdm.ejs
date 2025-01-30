@@ -5,54 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>APOSISTEM SUMBAR</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@2.50.0/dist/full.css" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-
 <body class="bg-gray-100">
-<!-- Sidebar -->
-<div class="w-64 bg-green-700 text-white h-screen flex flex-col">
-  <div class="px-6 py-4 font-bold text-xl">
-    <span>
-      <img src="/sumbar.png" alt="logo sumbar" class="h-8 w-8">
-      <p>APO SISTEM</p>
-      <p class="text-sm">UPTD BSPTH</p>
-    </span>
-  </div>
-  <nav class="mt-6 space-y-2" id="sidebar-menu">
-    <!-- Dashboard -->
-    <a 
-      href="/admin/dashboard" 
-      class="flex items-center px-6 py-2 rounded-md transition-colors hover:bg-green-800">
-      <span class="material-icons mr-3">home</span> Dashboard
-    </a>
-    <!-- Stok -->
-    <a 
-      href="/admin/kelolabibit" 
-      class="flex items-center px-6 py-2 rounded-md transition-colors hover:bg-green-800">
-      <span class="material-icons mr-3">inventory</span> Stok
-    </a>
-    <!-- User -->
-    <a 
-      href="/user" 
-      class="flex items-center px-6 py-2 rounded-md transition-colors hover:bg-green-800">
-      <span class="material-icons mr-3">people</span> User
-    </a>
-    <!-- Pengajuan -->
-    <a 
-      href="/pengajuan" 
-      class="flex items-center px-6 py-2 rounded-md transition-colors hover:bg-green-800">
-      <span class="material-icons mr-3">assignment</span> Pengajuan
-    </a>
-  </nav>
-  <div class="mt-auto px-6 py-4">
-    <a href="#" class="flex items-center px-6 py-2 hover:bg-green-800 rounded-md">
-      <span class="material-icons mr-3">logout</span> Keluar
-    </a>
-  </div>
-</div>
-</body>
 
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <div class="w-64 bg-green-700 text-white flex flex-col fixed h-screen z-50 transition-transform transform -translate-x-full lg:translate-x-0" id="sidebar">
+      <div class="px-6 py-4 font-bold text-xl">
+        <span>
+          <img src="/sumbar.png" alt="logo sumbar" class="h-8 w-8">
+          <p>APO SISTEM</p>
+          <p class="text-sm">UPTD BSPTH</p>
+        </span>
+      </div>
+      <nav class="mt-6 space-y-2" id="sidebar-menu">
+        <!-- Dashboard -->
+        <a 
+          href="/admin/dashboard" 
+          class="flex items-center px-6 py-2 rounded-md transition-colors hover:bg-green-800">
+          <span class="material-icons mr-3">home</span> Dashboard
+        </a>
+        <!-- Stok -->
+        <a 
+          href="/admin/stokAdmin" 
+          class="flex items-center px-6 py-2 rounded-md transition-colors hover:bg-green-800">
+          <span class="material-icons mr-3">inventory</span> Stok
+        </a>
+        <!-- Pengajuan -->
+        <a 
+          href="/admin/pengajuan" 
+          class="flex items-center px-6 py-2 rounded-md transition-colors hover:bg-green-800">
+          <span class="material-icons mr-3">assignment</span> Pengajuan
+        </a>
+      </nav>
+      <div class="mt-auto px-6 py-4">
+        <a href="#" class="flex items-center px-6 py-2 hover:bg-green-800 rounded-md">
+          <span class="material-icons mr-3">logout</span> Keluar
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col ml-0 lg:ml-64">
+      <!-- Navbar -->
+      <div class="bg-green-700 text-white p-4 flex justify-between items-center lg:hidden">
+        <button 
+          class="material-icons" 
+          id="toggleSidebar">menu</button>
+        <span>APOSISTEM SUMBAR</span>
+      </div>
+      <!-- Content -->
+    </div>
+  </div>
+</body>
 
 
 <script>

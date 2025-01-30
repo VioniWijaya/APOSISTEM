@@ -28,7 +28,8 @@
     "nodemon": "^3.1.9",
     "path": "^0.12.7",
     "sequelize": "^6.37.5",
-    "sequelize-cli": "^6.6.2"
+    "sequelize-cli": "^6.6.2",
+    "sweetalert2": "^11.15.10"
   },
   "devDependencies": {
     "daisyui": "^4.12.23",

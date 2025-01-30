@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false
     },
+
     foto_bibit: {
       type: DataTypes.STRING(255),
       allowNull: true
@@ -35,5 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'bibit',
     timestamps: false,
     freezeTableName: true
+
   });
+  
 };
