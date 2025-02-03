@@ -1,116 +1,254 @@
-<div class="flex min-h-screen">
-    <%- include('../superadmin/sidebarAdm')%>
-  <style>
-    /* Custom scrollbar for better appearance */
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #f1f1f1;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {      
-      background: #888;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: #555;
-    }
-  </style>
-</head>    
-<body class="bg-gray-100">
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gray-100 flex">
 
+    <!-- Sidebar -->
+    <div class="w-64 h-screen fixed top-0 left-0 bg-white shadow-md">
+        <%- include('../superadmin/sidebarAdm') %>
+    </div>
 
-      <!-- Content -->
-      <div class="p-4">
+    <!-- Main Content -->
+    <div class="ml-64 flex-1 p-6 bg-gray-100 min-h-screen">
         <h1 class="text-2xl font-bold mb-4">Kelola Admin</h1>
-        <button 
-        class="btn btn-success mb-4" 
-        onclick="location.href='/superadmin/admin/tambah'">
-        + Tambah Admin
-      </button>
-      
+        <button class="btn btn-success mb-4" onclick="location.href='/superadmin/admin/tambah'">+ Tambah Admin</button>
 
-        <div class="overflow-x-auto custom-scrollbar">
-          <table class="table w-full border">
-            <thead>
-              <tr>       
-                <th>No</th>
-                <th>Foto Admin</th>
-                <th>Nama Admin</th>
-                <th>NIP</th>
-                <th>Email</th>
-                <th>Alamat</th>
-                <th>No Hp</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="admin-table">
-              <!-- Data rows will be inserted dynamically -->
-            </tbody>
-          </table>
-        </div>
+        <!-- Wrapper agar tabel bisa di-scroll jika melebihi satu halaman -->
+        <div class="overflow-auto bg-white shadow-md rounded-lg p-4 max-h-[75vh]">
+            <table class="table-fixed w-full bg-white shadow-md rounded-lg overflow-hidden">
+                <thead class="bg-green-500 text-white">
+                    <tr>
+                        <th class="px-6 py-3 text-center w-12">No</th>
+                        <th class="px-6 py-3 text-center w-28">Foto</th>
+                        <th class="px-6 py-3 text-center w-40">Nama</th>
+                        <th class="px-6 py-3 text-center w-40">Email</th>
+                        <th class="px-6 py-3 text-center w-32">NIP</th>
+                        <th class="px-6 py-3 text-center w-32">No HP</th>
+                        <th class="px-6 py-3 text-center w-40">Alamat</th>
+                        <th class="px-6 py-3 text-center w-40">Aksi</th>
+                    </tr>
+                </thead> 
+                <tbody>
+                    <% admins.forEach((admin, index) => { %>
+                        <tr class="border-b text-center">
+                            <td class="px-6 py-3"><%= index + 1 %></td>
+                            <td class="px-6 py-3">
+                                <div class="w-16 h-24 border border-gray-300 rounded-md overflow-hidden mx-auto">
+                                    <img src="<%= admin.foto_profile %>" alt="foto" class="w-full h-full object-cover">
+                                </div>
+                            </td>
+                            <td class="px-6 py-3"><%= admin.nama %></td>
+                            <td class="px-6 py-3"><%= admin.email %></td>
+                            <td class="px-6 py-3"><%= admin.nip || "-" %></td>
+                            <td class="px-6 py-3"><%= admin.no_hp %></td>
+                            <td class="px-6 py-3"><%= admin.alamat %></td>
+                            <td class="px-6 py-3">
+                                <button class="bg-blue-500 text-white px-4 py-2 rounded w-24 edit-password-btn" 
+                                    data-id="<%= admin.id %>">Edit</button>
+                                <button class="bg-red-500 text-white px-4 py-2 rounded w-24 delete-btn" 
+                                    data-id="<%= admin.id %>">Hapus</button>
+                            </td>     
+                    </tr>
+                <% }); %>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const modal = document.getElementById("modalEditPassword");
+                        const form = document.getElementById("formEditPassword");
+                        const errorPassword = document.getElementById("errorPassword");
+                        const inputPassword = document.getElementById("newPassword");
+                
+                        // Event Listener untuk Tombol Edit Password
+                        document.querySelectorAll(".edit-password-btn").forEach(button => {
+                            button.addEventListener("click", function () {
+                                const adminId = this.getAttribute("data-id");
+                                document.getElementById("adminId").value = adminId;
+                                modal.classList.remove("hidden");
+                            });
+                        });
+                
+                        // Tutup Modal
+                        function closeModal() {
+                            modal.classList.add("hidden");
+                            inputPassword.value = "";
+                            errorPassword.classList.add("hidden");
+                        }
+                
+                        window.closeModal = closeModal;
+                
+                        // Handle Form Submit
+                        form.addEventListener("submit", async function (event) {
+                            event.preventDefault();
+                            const adminId = document.getElementById("adminId").value;
+                            const newPassword = inputPassword.value;
+                
+                            // Validasi Minimal 6 Karakter
+                            if (newPassword.length < 6) {
+                                errorPassword.classList.remove("hidden");
+                                return;
+                            }
+                
+                            try {
+                                let response = await fetch(`/superadmin/admin/update-password/${adminId}`, {
+                                    method: "PUT",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ newPassword })
+                                });
+                
+                                let result = await response.json();
+                
+                                if (result.success) {
+                                    Swal.fire({
+                                        title: "Berhasil!",
+                                        text: "Password berhasil diperbarui.",
+                                        icon: "success",
+                                        confirmButtonText: "OK",
+                                        confirmButtonColor: "#16a34a"
+                                    }).then(() => {
+                                        closeModal();
+                                    });
+                                } else {
+                                    Swal.fire("Error", result.message, "error");
+                                }
+                            } catch (error) {
+                                Swal.fire("Error", "Terjadi kesalahan server.", "error");
+                            }
+                        });
+                    });
+                </script>
+            </tbody>  
+         
+<!-- MODAL EDIT PASSWORD -->
+<div id="modalEditPassword" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 hidden">
+    <div class="bg-white rounded-lg p-8 shadow-lg w-96 border border-gray-300">
+        <h2 class="text-xl font-semibold mb-4">Edit Password</h2>
+        
+        <form id="formEditPassword">
+            <input type="hidden" name="adminId" id="adminId">
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 font-medium">Password Baru</label>
+                <input type="password" id="newPassword" name="newPassword" class="w-full border border-gray-300 p-3 rounded-md focus:ring focus:ring-green-500" required>
+                <p id="errorPassword" class="text-red-500 text-sm hidden">Password minimal 6 karakter</p>
+            </div>
+
+            <!-- Tombol Aksi -->
+            <<div class="flex justify-end gap-3">
+                    <button type="button" class="bg-gray-500 hover:bg-gray-700 px-4 py-2 rounded text-white" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="bg-green-500 hover:bg-green-700 px-4 py-2 rounded text-white">Simpan</button>
+                </div>
+                
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+<!-- SCRIPT UNTUK MODAL -->
+<script>
+    function openModal(adminId) {
+        document.getElementById("modalEditPassword").classList.remove("hidden");
+        document.getElementById("adminId").value = adminId; 
+    }
+
+    function closeModal() {
+        document.getElementById("modalEditPassword").classList.add("hidden");
+    }
+
+    document.getElementById("formEditPassword").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        let adminId = document.getElementById("adminId").value;
+        let newPassword = document.getElementById("newPassword").value;
+        let errorText = document.getElementById("errorPassword");
+
+        if (newPassword.length < 6) {
+            errorText.classList.remove("hidden");
+            return;
+        } else {
+            errorText.classList.add("hidden");
+        }
+
+        try {
+            let response = await fetch(`/superadmin/admin/update-password/${adminId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ newPassword })
+            });
+
+            let result = await response.json();
+
+            if (result.success) {
+                Swal.fire({
+                    title: "Berhasil!",
+                    text: "Password berhasil diperbarui.",
+                    icon: "success",
+                    confirmButtonColor: "#4CAF50"
+                }).then(() => {
+                    closeModal();
+                });
+            } else {
+                Swal.fire("Error", "Gagal memperbarui password.", "error");
+            }
+        } catch (error) {
+            Swal.fire("Error", "Terjadi kesalahan server.", "error");
+        }
+    });
+</script>
+        </table> 
       </div>
     </div>
 
-    <!-- Sidebar -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".delete-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const adminId = this.getAttribute("data-id");
 
-  <script>
-    const admins = [
-      {
-        id: 1,
-        name: "Sutomo",
-        nip: "19098767678908987",
-        email: "Sutomo@gmail.com",
-        photo: "https://via.placeholder.com/100",
-      },
-      {
-        id: 2,
-        name: "Taehyung",
-        nip: "2349238427775634",
-        email: "taehyung@gmail.com",
-        photo: "https://via.placeholder.com/100",
-      },
-    ];
-    const tableBody = document.getElementById("admin-table");
-    function renderTable() {
-      tableBody.innerHTML = ""; // Clear previous data
-      admins.forEach((admin, index) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${index + 1}</td>
-          <td>
-            <div class="avatar">
-              <div class="w-16 rounded-full">
-                <img src="${admin.photo}" alt="Admin Photo" />
-              </div>
-            </div>
-          </td>
-          <td>${admin.name}</td>
-          <td>${admin.nip}</td>
-          <td>${admin.email}</td>
-          <td>
-            <button class="btn btn-error btn-sm" onclick="deleteAdmin(${admin.id})">Hapus</button>
-            <button class="btn btn-warning btn-sm" onclick="editAdmin(${admin.id})">Edit</button>
-            <button class="btn btn-info btn-sm" onclick="changePassword(${admin.id})">Ganti Password</button>
-          </td>
-        `;
-        tableBody.appendChild(row);
-      });
-    }
-    function deleteAdmin(id) {
-      const index = admins.findIndex((admin) => admin.id === id);
-      if (index !== -1) {
-        admins.splice(index, 1);
-        renderTable();
-      }
-    }
-    function editAdmin(id) {
-      alert("Edit Admin dengan ID: " + id);
-    }
-    function changePassword(id) {
-      alert("Ganti Password untuk Admin ID: " + id);
-    }
-    // Render table on page load
-    renderTable();
-  </script>
+                    Swal.fire({
+                        title: `Yakin ingin menghapus admin?`,
+                        text: "Data tidak bisa dikembalikan setelah dihapus!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Ya, hapus!",
+                        cancelButtonText: "Batal"
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            try {
+                                let response = await fetch(`/superadmin/admin/hapus/${adminId}`, {
+                                    method: "DELETE"
+                                });
+
+                                let result = await response.json();
+
+                                if (result.success) {
+                                    Swal.fire({
+                                        title: "Dihapus!",
+                                        text: "Admin telah dihapus.",
+                                        icon: "success",
+                                        confirmButtonColor: "#d33"
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    Swal.fire("Error", "Gagal menghapus admin.", "error");
+                                }
+                            } catch (error) {
+                                Swal.fire("Error", "Terjadi kesalahan server.", "error");
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
 </body>
 </html>
