@@ -22,6 +22,11 @@ const app = express();
 app.set('views', path.join(__dirname, 'view'));
 app.set('view engine', 'ejs');
 
+app.get('/kelolabibit', (req, res) => {
+    res.render('admin/kelolabibit');
+});
+
+
 // Middleware
 app.use(logger('dev'));
 app.use(express.json());

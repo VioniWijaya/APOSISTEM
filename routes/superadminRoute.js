@@ -1,9 +1,21 @@
-const express = require("express");
-const router = express.Router();
+
+var express = require('express');
+var router = express.Router();
+const { ensureAuth, checkRole } = require('../middleware/auth');
 const path = require("path"); 
 const fs = require("fs"); 
 const superAdminController = require("../controller/superAdminController");
 const upload = require("../middleware/upload");
+
+
+// router.get('/dashboard', (req, res) => {
+//   res.render('superadmin/dashboard');
+// });
+
+// Rute untuk dashboard Super Admin
+router.get('/dashboard', ensureAuth, checkRole(['Super Admin']), (req, res) => {
+  res.render('superadmin/dashboard');
+});
 
 
 // Rute untuk menampilkan form tambah admin
@@ -23,3 +35,4 @@ router.get('/dashboard', (req, res) => {
 
 
 module.exports = router;
+

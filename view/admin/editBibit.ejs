@@ -1,0 +1,27 @@
+<div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <%- include('../admin/sidebarAdm') %>
+    
+
+    <!-- Content -->
+    <div class="flex-1 p-10">
+        <h1 class="text-2xl font-bold text-green-900 mb-6">Edit Bibit</h1>
+        <div class="grid grid-cols-3 gap-6">
+            <div>
+                <div class="w-100 h-48 bg-gray-300 flex items-center justify-center rounded-md">Foto</div>
+                <button class="btn bg-green-700 text-white mt-3 w-full">Ganti Foto</button>
+            </div>
+            <div class="col-span-2 space-y-4">
+                <label class="block">Nama Bibit <input type="text" class="input input-bordered w-full" /></label>
+                <label class="block">Jumlah <input type="number" class="input input-bordered w-full" /></label>
+                <label class="block">Produksi <input type="text" class="input input-bordered w-full" /></label>
+                <label class="block">Distribusi <input type="text" class="input input-bordered w-full" /></label>
+                <label class="block">Deskripsi <textarea class="textarea textarea-bordered w-full"></textarea></label>
+            </div>
+        </div>
+        <a href="/admin/detailBibit" class="btn bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-700">← Kembali</a>
+        <button class="btn bg-green-800 text-white px-6 py-2 rounded-lg hover:bg-green-600">Simpan</button>
+    </div>
+</div>
+</body>
+</html>
