@@ -5,6 +5,7 @@ const fs = require("fs");
 const superAdminController = require("../controller/superAdminController");
 const upload = require("../middleware/upload");
 
+
 // Rute untuk menampilkan form tambah admin
 router.get("/admin/tambah", superAdminController.tampilFormTambahAdmin);
 
@@ -16,9 +17,9 @@ router.get('/dashboard', (req, res) => {
    res.render('superadmin/dashboard'); 
  });
 
- router.get('/kelolaAdm', (req, res) => {
-  res.render('superadmin/kelolaAdm');
-});
+ router.get("/kelolaAdm", superAdminController.tampilSemuaAdmin); // Route untuk menampilkan data admin
+ router.delete("/admin/hapus/:id", superAdminController.hapusAdmin);
+ router.put("/admin/update-password/:id", superAdminController.updatePassword);
 
 
 module.exports = router;

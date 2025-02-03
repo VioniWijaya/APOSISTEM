@@ -90,5 +90,74 @@
             }
         });
     </script>
+    <script>
+        document.querySelector("input[name='no_hp']").addEventListener("input", function () {
+            const noHp = this.value;
+            const errorText = document.getElementById("errorNoHP");
+    
+            if (noHp.length < 12 || noHp.length > 15) {
+                errorText.classList.remove("hidden");
+            } else {
+                errorText.classList.add("hidden");
+            }
+        });
+    
+        document.getElementById("adminForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+    
+            const noHp = document.querySelector("input[name='no_hp']").value;
+            if (noHp.length < 12 || noHp.length > 15) {
+                Swal.fire({
+                    title: "Error",
+                    text: "Nomor HP harus terdiri dari 12-15 angka.",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#d33"
+                });
+                return;
+            }
+    
+            let formData = new FormData(this);
+    
+            try {
+                let response = await fetch("/superadmin/admin/tambah", {
+                    method: "POST",
+                    body: formData
+                });
+    
+                let result = await response.json();
+    
+                if (result.success) {
+                    Swal.fire({
+                        title: "Berhasil!",
+                        text: "Admin berhasil ditambahkan.",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                        confirmButtonColor: "#16a34a" // Warna hijau untuk tombol OK
+                    }).then(() => {
+                        window.location.href = "/superadmin/kelolaAdm";
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        text: result.message,
+                        icon: "error",
+                        confirmButtonText: "OK",
+                        confirmButtonColor: "#d33"
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    title: "Error",
+                    text: "Terjadi kesalahan server.",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#d33"
+                });
+            }
+        });
+    </script>
+    
+    
 </body>
 </html>
